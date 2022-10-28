@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <title>Monthly Budget Planner</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans">
+    <link rel="stylesheet" href="/stylesheets/application.css">
+    <script src="https://use.fontawesome.com/8ddc80cab1.js"></script>
+    <%# <script src="/javascripts/jquery-3.6.1.js"></script> %>
+    <%# <script src="/javascripts/application.js"></script> %>
+
+    <script src="/javascripts/chartkick.js"></script>
+    <script src="/javascripts/highcharts.js"></script>
+  </head>
+  <body>
+    <header>
+         <h1>October 2022</h1>
+ 
+         <h2><%= @month_year %>
+    
+    </header>
+        
+    
+      <div class="sidebar-nav">
+        <header>Budget App</header>
+          <ul>
+            <%# <li><a href="/mybudget"><i class="fa-solid fa-landmark"></i>My Budget</a></li> %>
+            <li><a href="/income"><i class="fa-solid fa-landmark"></i>Income</a></li>
+            <li><a href="/expenses"><i class="fa-solid fa-landmark"></i>Expenses</a></li>
+            <li><a href="/debt"><i class="fa-regular fa-hands-holding-dollar"></i>Debt</a></li>
+            <li><a href="/emergency"><i class="fa-regular fa-hands-holding-dollar"></i>Emergency Fund</a></li>
+            <%# <li><a href="/goals"><i class="fa-solid fa-piggy-bank"></i>Goals</a></li> %>
+            <%# <li><a href="/networth"><i class="fa-solid fa-face-tongue-money"></i>Net Worth</a></li> %>
+            <li><a href="/insights"><i class="fa-regular fa-hands-holding-dollar"></i>Insights</a></li>
+            <li>  <i class="fa-solid fa-landmark"></i></li>
+          </ul>
+      </div>
+ 
+
+  <i class="fa-solid fa-landmark"></i>
+
+    <main>
+      <%= yield %>
+    </main>
+  </body>
+</html>

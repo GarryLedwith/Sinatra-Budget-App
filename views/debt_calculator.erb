@@ -1,0 +1,27 @@
+<% if session[:error] %>
+  <div class="flash-message error">
+    <p><%= session.delete(:error) %></p>
+  </div>
+<% end %>
+
+<form action="/debt" method="post">
+<dl>
+  <dt> 
+    <label for="debt_item">Debt Repayment Calculator</label>
+  </dt>
+  <dd>
+    <input name="balanced_owed" placeholder="Balanced Owed" type="text" value=""/>
+  </dd>
+   <dd>
+    <input name="estimated_interest_rate" placeholder="Estimated Interest Rate" type="text" value=""/>
+  </dd>
+  <dd>
+    <input name="expected_monthly_payment" placeholder="Expected Monthly Payment" type="text" value=""/>
+  </dd>
+</dl>
+
+<fieldset class="actions">
+  <input type="submit" value="Calculate" />
+  <a href="/debt">Cancel</a>
+  </fieldset>
+</form>

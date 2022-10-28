@@ -1,0 +1,21 @@
+<% if session[:error] %>
+  <div class="flash-message error">
+    <p><%= session.delete(:error) %></p>
+  </div>
+<% end %>
+
+<form action="/emergency" method="post">
+<dl>
+  <dt> 
+    <label for="emergency_item">Enter the amount you want to add to emergency fund:</label>
+  </dt>
+   <dd>
+    <input name="emergency_amount" placeholder="Amount" type="text" value=""/>
+  </dd>
+</dl>
+
+<fieldset class="actions">
+  <input type="submit" value="Save" />
+  <a href="/emergency">Cancel</a>
+  </fieldset>
+</form>

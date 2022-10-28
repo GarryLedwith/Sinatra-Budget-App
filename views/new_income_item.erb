@@ -1,0 +1,24 @@
+<% if session[:error] %>
+  <div class="flash-message error">
+    <p><%= session.delete(:error) %></p>
+  </div>
+<% end %>
+
+<form action="/income" method="post">
+<dl>
+  <dt> 
+    <label for="income_item">Enter the name of Incomce source:</label>
+  </dt>
+  <dd>
+    <input name="income_item" placeholder="Income" type="text" value=""/>
+  </dd>
+   <dd>
+    <input name="income_amount" placeholder="Amount" type="text" value=""/>
+  </dd>
+</dl>
+
+<fieldset class="actions">
+  <input type="submit" value="Save" />
+  <a href="/income">Cancel</a>
+  </fieldset>
+</form>

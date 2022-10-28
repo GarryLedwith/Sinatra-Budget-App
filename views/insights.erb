@@ -1,0 +1,28 @@
+<h2>Display populated pages for a reference</h2>
+
+<form action="#" method="post">
+  <fieldset>
+    <label>
+      Dates
+      <select name="time-frame">
+        <option value="" disabled selected>Choose a Date Range</option>
+        <option value="#f00">Year to Date</option>
+        <option value="#0f0">Past 3 Months</option>
+        <option value="#00f">Past 6 Months</option>
+        <option value="#0f0">Past 9 Months</option>
+        <option value="#0f0">Past 12 Months</option>
+      </select>
+    </label>
+  </fieldset>
+</form>
+
+<h2>Monthly Income</h2>
+<h2>Monthly Expenses</h2>
+<h2>Income Vs Spending</h2>
+
+<center>
+    <h1>Networth for <%= @current_year %></h1>
+      <p>
+        <%= line_chart(@networth) %>
+      </p>
+</center>

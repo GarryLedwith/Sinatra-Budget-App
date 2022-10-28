@@ -1,0 +1,28 @@
+<% if session[:error] %>
+  <div class="flash-message error">
+    <p><%= session.delete(:error) %></p>
+  </div>
+<% end %>
+
+<form action="/expense" method="post">
+<dl>
+  <dt> 
+    <label for="expense_item">Enter the name of your expense:</label>
+  </dt>
+  <dd>
+    <input name="expense_item" placeholder="Expense" type="text" value=""/>
+  </dd>
+   <dd>
+    <input name="expense_amount" placeholder="Amount" type="text" value=""/>
+  </dd>
+  <dd>
+    <label for="due">Due Date</label>
+    <input name="expense_due_date" placeholder="Due Date" type="date" value=""/>
+  </dd>
+</dl>
+
+<fieldset class="actions">
+  <input type="submit" value="Save" />
+  <a href="/expenses">Cancel</a>
+  </fieldset>
+</form>

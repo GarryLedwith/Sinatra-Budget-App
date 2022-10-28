@@ -1,0 +1,31 @@
+<h1>Expense Categories</h1>
+
+<h2><%= @current_month%></h2>
+<h2><%= @current_year%></h2>
+
+<% if session[:success] %>
+  <div class="flash-message success">
+    <p><%= session.delete(:success) %></p>
+  </div>
+<% end %>
+
+<ul id="categories">
+  <% session[:expense_categories].each_with_index do |category, index| %>
+    <li>
+      <a href="/expenses/<%= index %>">
+        <h2><%= category[:name] %></h2>
+        <p><%= category[:expenses].size %></p>
+      </a>
+    </li>
+  <% end %>
+<a href="/expenses/new">New Expense Category</a>
+</ul>
+
+<%# <%= @expense_categories %> 
+
+<center>
+    <h1>Expense Category Breakdown</h1>
+      <p>
+        <%= pie_chart(session[:pie_chart]) %>
+      </p>
+</center>

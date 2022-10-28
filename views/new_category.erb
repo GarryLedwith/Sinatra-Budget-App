@@ -1,0 +1,21 @@
+<% if session[:error] %>
+  <div class="flash-message error">
+    <p><%= session.delete(:error) %></p>
+  </div>
+<% end %>
+
+<form action="/expenses" method="post">
+<dl>
+  <dt> 
+    <label for="expense_category_name">Enter the name of your Expense Category:</label>
+  </dt>
+  <dd>
+    <input name="expense_category_name" placeholder="Category" type="text" value=""/>
+  </dd>
+</dl>
+
+<fieldset class="actions">
+  <input type="submit" value="Save" />
+  <a href="/expenses">Cancel</a>
+  </fieldset>
+</form>
