@@ -47,4 +47,5 @@ The Budget App is a web application designed to help users manage their personal
   - validate all form input 
 
 7. **Testing**
+  - set up test enviroment 
   
