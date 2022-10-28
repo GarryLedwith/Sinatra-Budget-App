@@ -9,6 +9,8 @@ require "bcrypt"
 require "date"
 require "chartkick"
 require "financial_calculator"
+require "pry"
+require "tux"
 
 configure do 
   enable :sessions 
@@ -89,12 +91,23 @@ def load_income_data
 end
 
 # display income data 
-def show_income_data(year, month)
+def show_income_data(year, month) # need to rename this method to show_monthly_data 
   income_data = load_income_data
   
   # income_data[:month][:october][0]['amount'] # need to create a loop to iterate through yaml file here 
   income_data
 end
+
+def add_income_to_database(name, amout)
+  income_data = load_income_data 
+
+  income_data.each do |k, v| 
+
+  end
+
+end 
+
+#===============================================================
 
 # load expense data 
 
