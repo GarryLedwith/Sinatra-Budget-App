@@ -87,7 +87,7 @@ def load_income_data
     File.expand_path("../data/income.yml", __FILE__)
   end
 
-  YAML.load_file(income_path) 
+  YAML.load_file(income_path) # returns contents of yaml file 
 end
 
 # display income data 
@@ -98,10 +98,67 @@ def show_income_data(year, month) # need to rename this method to show_monthly_d
   income_data
 end
 
-def add_income_to_database(name, amout)
+# add income to income yaml file 
+def add_income_to_database(name, amount)
   income_data = load_income_data 
 
-  income_data.each do |k, v| 
+  # create a method to write to yaml file 
+
+  #Testing purposes: 
+  # k => year 
+  # v => hash containing 12 months in given year 
+  # income_data.each do |k, v| 
+  #   income_data[k][:month][:october][0][:income] = name # hardcoded for testing 
+  #   income_data[k][:month][:october][0][:amount] = amount 
+  #   binding.pry 
+  # end
+
+ 
+
+
+  
+  # if income_data[:year].nil? 
+  #   # create a key value pair 
+  #   income_data[:year] = "2022"
+  #   income_data[:months] 
+  #   :month:
+  #   :january: []
+  #   :february: []
+  #   :march: []
+  #   :april: []
+  #   :may: []
+  #   :june: []
+  #   :july: []
+  #   :august: []
+  #   :september: []
+  #   :october: []
+  #   :november: []
+  #   :december: []
+
+  # end 
+  
+  # income_data[:year][:month][:october] = name # hardcoded for testing 
+  # income_data[:year][:month][:october][0][:amount] = amount 
+  
+  # income_data[:test] = "new test"
+  # # income_data[:test][:month] = "May"
+
+  # path = "/home/parallels/Launch_School/Projects/RB175/budget_planner/data/income.yml"
+  
+  # File.open(path, 'w') { |f| YAML.dump(income_data[:test], f)} # write to yaml file 
+  # binding.pry 
+
+
+  # data = YAML.load_file "path/to/yml_file.yml"
+  # data["Name"] = ABC
+  # File.open("path/to/yml_file.yml", 'w') { |f| YAML.dump(data, f) }
+
+
+
+  # creates a new yaml file if none exists 
+  def create_new_annual_database 
+
+
 
   end
 
@@ -158,9 +215,13 @@ get "/income" do
     File.basename(path) 
   end # returns income.yml file (for visual purpose only)
 
-  @income_data = show_income_data(@current_year, @current_month)
+  #@income_data = show_income_data(@current_year, @current_month)
+
+  @income_data = load_income_data # for testing purposes (returns the absolute path)
 
   @monthly_data = Hash.new # displays chart data 
+
+  # add_income_to_database(@current_year, @current_month)
 
   session[:october_income].each do |hash|
     hash.each do |key, value|
@@ -182,8 +243,10 @@ post '/income' do
 income_name = params[:income_item].strip 
 income_amount = params[:income_amount].strip 
 
+
 if income_name.size >= 1 && income_name.size <= 100 
   session[:income_items] << { name: income_name, amount: income_amount } # needs to be added to yaml file 
+  add_income_to_database(income_name, income_amount) # add income to yml file 
   
   session[:october_income] << { income_name => income_amount } # info for display chart 
   session[:success] = "The income and amount has been created."
