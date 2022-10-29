@@ -1,0 +1,68 @@
+<% if session[:error] %>
+  <div class="flash-message error">
+    <p><%= session.delete(:error) %></p>
+  </div>
+<% end %>
+
+<form action="/mybudget" method="post">
+<dl>
+  <dt> 
+    <label for="expense_item">Enter the details for your new budget:</label>
+  </dt>
+  <dd>
+    <input name="expense_item" placeholder="Budget Name" type="text" value=""/>
+  </dd>
+  <dd>
+    <fieldset>
+    <label>
+      Currency
+      <select name="categories">
+        <option value="" disabled selected>Choose Currency</option>
+        <option value="#f00">Euro-EUR</option>
+        <option value="#0f0">US Dollar-USD</option>
+        <option value="#00f">Canadian Dollar-CAD</option>
+      </select>
+    </label>
+  </fieldset>
+  </dd>
+  <dd>
+    <fieldset>
+    <label>
+      Date Format
+      <select name="categories">
+        <option value="" disabled selected>Choose Format</option>
+        <option value="#f00">12/30/2022</option>
+        <option value="#0f0">30/12/2022</option>
+        <option value="#00f">2022/12/30</option>
+      </select>
+    </label>
+  </fieldset>
+  </dd>
+  <dd>
+  <label>Currency Placement</label>
+  <fieldset>
+    <label>
+      Before amount ($123,456)
+      <input type="radio" name="color" value="red" />
+    </label>
+
+    <label>
+      After amount (123,456$)
+      <input type="radio" name="color" value="green" checked />
+    </label>
+
+    <label>
+      None (123,456)
+      <input type="radio" name="color" value="blue" />
+    </label>
+  </fieldset>
+  </dd>
+</dl>
+
+<fieldset class="actions">
+  <input type="submit" value="Create Budget" />
+  <a href="/income">Cancel</a>
+  </fieldset>
+</form>
+
+
