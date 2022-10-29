@@ -113,10 +113,6 @@ def add_income_to_database(name, amount)
   #   binding.pry 
   # end
 
- 
-
-
-  
   # if income_data[:year].nil? 
   #   # create a key value pair 
   #   income_data[:year] = "2022"
@@ -148,10 +144,11 @@ def add_income_to_database(name, amount)
   # File.open(path, 'w') { |f| YAML.dump(income_data[:test], f)} # write to yaml file 
   # binding.pry 
 
-  income = {name: "work", amount: "400"}
+  income = {name: name, amount: amount}
 
 
-File.open(path, "w") { |file| file.write(income.to_yaml) }
+File.open(path, "w") { |file| file.write(income.to_yaml) } # this will write to the associated yml file each time it is ran 
+# and will override any existing data in the file 
 
 
   # data = YAML.load_file "path/to/yml_file.yml"
@@ -451,7 +448,7 @@ end
 
 
 get "/mybudget" do 
-  erb :my_budget, layout: :layout 
+  erb :new_budget, layout: :layout 
 end
 
 
