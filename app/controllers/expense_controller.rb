@@ -1,7 +1,7 @@
-# Add Expense routes 
+# Add Expense routes
 
-class ExpenseController < ApplicationController 
-  def initialize
-    
+class ExpenseController < ApplicationController
+  def initialize(name, amount, date)
+
   end
 end
