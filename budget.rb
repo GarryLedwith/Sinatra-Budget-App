@@ -141,12 +141,17 @@ def add_income_to_database(name, amount)
   # income_data[:year][:month][:october][0][:amount] = amount 
   
   # income_data[:test] = "new test"
-  # # income_data[:test][:month] = "May"
+  # income_data[:month] = "May"
 
-  # path = "/home/parallels/Launch_School/Projects/RB175/budget_planner/data/income.yml"
+  path = "/home/parallels/Launch_School/Projects/RB175/budget_planner/data/income.yml"
   
   # File.open(path, 'w') { |f| YAML.dump(income_data[:test], f)} # write to yaml file 
   # binding.pry 
+
+  income = {name: "work", amount: "400"}
+
+
+File.open(path, "w") { |file| file.write(income.to_yaml) }
 
 
   # data = YAML.load_file "path/to/yml_file.yml"
