@@ -4,13 +4,13 @@
   </div>
 <% end %>
 
-<form action="/mybudget" method="post">
+<form class="create" action="/mybudget" method="post">
 <dl>
-  <dt> 
-    <label for="expense_item">Enter the details for your new budget:</label>
+  <dt>
+    <label for="new_budget">Enter the details for your new budget:</label>
   </dt>
   <dd>
-    <input name="expense_item" placeholder="Budget Name" type="text" value=""/>
+    <input name="budget_name" placeholder="Budget Name" type="text" value=""/>
   </dd>
   <dd>
     <fieldset>
@@ -59,8 +59,8 @@
   </dd>
 </dl>
 
-<fieldset class="actions">
-  <input type="submit" value="Create Budget" />
+<fieldset class="actions" >
+  <input type="submit" value="Create" />
   <a href="/income">Cancel</a>
   </fieldset>
 </form>
