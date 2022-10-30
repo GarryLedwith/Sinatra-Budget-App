@@ -7,7 +7,7 @@
     <h2>Income for <%= @current_month %></h2>
   </header>
     <table>
-      <thead>   
+      <thead>
         <tr>
           <th scope="col" colspan="0">Income</th>
           <th scope="col" colspan="5">Amount</th>
@@ -21,17 +21,17 @@
           <td scope="col" colspan="5"><%= table[:amount] %></td>
           <td scope="col" colspan="5">
             <a href="/income/?/edit">Edit Item</a>
-          </td>  
+          </td>
            <td scope="col" colspan="5">
             <a href="/income/?/delete">Delete Item</a>
-          </td> 
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
 
-<a href="/income/new">Add Income</a> 
+<a href="/income/new">Add Income</a>
 
 <% session[:income_items].each do |table| %>
  <% @total << table[:amount].to_i %>
@@ -40,7 +40,7 @@
 <%# <%= session[:income_items] %>
 <h2>Total Income for October: $<%= @total.sum %></h2>
 
-<%# <%= @monthly_data %> 
+<%# <%= @monthly_data %>
 <h1>Testing directories and files</h1>
 
 <ul>
@@ -50,6 +50,8 @@
 </ul>
 
 <h2><%= @income_data %>
+
+<h2><%= @new_database_table %>
 
 <center>
     <h1>Income Breakdown</h1>
