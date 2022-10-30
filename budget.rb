@@ -46,25 +46,6 @@ before do
   @current_year = current_year
 end
 
-# view helpers
-# helpers do
-#   def count_expenses
-#     # will count the number of expenses per expense category
-#   end
-
-#   def group_income_by_date_range
-#     # groups income into a specified date range and displays the data
-#   end
-
-#   def group_expenses_by_date_range
-#     # groups expenses into a specified date range and displays the data
-#   end
-
-#   def group_networth_by_date_range
-#     # groups networth into a specified date range and displays the data
-#   end
-# end
-
 # absolute path for data
 def data_path
  if ENV["RACK-ENV"] == 'test'
@@ -75,7 +56,7 @@ def data_path
 end
 
 
-#========= Accessing income and expense data in yaml files ==============================
+#========= Income Methods ==============================
 
 # load income data
 
@@ -90,7 +71,7 @@ def load_income_data
   YAML.load_file(income_path) # returns contents of yaml file
 end
 
-# Absolute path for incoem.yml (will refactor)
+# Absolute path for income.yml (will refactor)
 def income_data_path
   income_path = if ENV["RACK-ENV"] == "test"
     File.expand_path("../test/data/income.yml", __FILE__)
@@ -100,8 +81,6 @@ def income_data_path
 
   YAML.load(income_path) # returns the absolute path
 end
-
-
 
 # display income data
 def show_income_data(year, month) # need to rename this method to show_monthly_data
@@ -113,10 +92,6 @@ end
 
 # add income to income yaml file
 def add_income_to_database(name, amount)
-
-  #   =========NOTE=======
-  # When I delete database these two local variables are returning nil:
-
   year = current_year.to_sym # converts current year to symbol
   month = current_month.downcase.to_sym # converts current month to a symbol
 
@@ -125,13 +100,113 @@ def add_income_to_database(name, amount)
   income_data = load_income_data # loads the contents of the yml file
   income = { name: name, amount: amount } # hash will be stored in database
 
+  income_data[year][month] << income # appends income to database
+
+  update_database = YAML.dump(income_data) # converts data to YAML
+  File.write(path, update_database) # update data in database (yml file)
+  # binding.pry
+end
+
+# will need to add one argument to this method: a path to yml file
+def create_empty_database_table
+  path = income_data_path # loads path to income.yml
+  income_data = load_income_data # loads the contents of the inclme yml file (tesing purposes only)
+  income_table = annual_database_table
+
+  File.open(path, 'w') { |file| file.write(income_table.to_yaml)}
+end
+
+#============ non specific database methods ==============
+
+# yearly database table template
+def annual_database_table
+  year = current_year.to_sym
+
+  { year => { januray: [], february: [], march: [], april: [],
+              may: [], june: [], july: [], august: [], september: [],
+              october: [], november: [], december: [] }}
+end
+
+
+#====================================================
+# Expense database tables
+
+
+def annual_expense_category_database_table
+  year = current_year.to_sym
+
+  { year => { category: { januray: [], february: [], march: [], april: [],
+    may: [], june: [], july: [], august: [], september: [],
+    october: [], november: [], december: [] }}}
+end
+
+def create_empty_expense_database_table
+  path = expense_data_path # loads path to income.yml
+  expense_data = load_expense_data # loads the contents of the inclme yml file (tesing purposes only)
+  expense_table = annual_expense_category_database_table
+
+  File.open(path, 'w') { |file| file.write(expense_table.to_yaml)}
+end
+
+#===============================================================
+
+#========= Expense Methods ====================================
+
+# Absolute path for expense.yml (will refactor)
+
+# This file path in this method must be dynamic
+def expense_data_path
+  expense_path = if ENV["RACK-ENV"] == "test"
+    File.expand_path("../test/data/expenses.yml", __FILE__)
+  else
+    File.expand_path("../data/expenses.yml", __FILE__)
+  end
+
+  YAML.load(expense_path) # returns the absolute path
+end
+
+# reads and parses file
+# Redundent code (will refactor)
+def load_expense_data
+  expense_path = if ENV["RACK-ENV"] == "test"
+    File.expand_path("../test/data/expenses.yml", __FILE__)
+  else
+    File.expand_path("../data/expenses.yml", __FILE__)
+  end
+
+  YAML.load_file(expense_path)
+end
+
+# display income data
+def show_income_data(year, month) # need to rename this method to show_monthly_data
+  income_data = load_income_data
+
+  # income_data[:month][:october][0]['amount'] # need to create a loop to iterate through yaml file here
+  income_data
+end
+
+# add income to income yaml file
+def add_expense_to_database(name, amount, date)
+
+  #   =========NOTE=======
+  # When I delete database these two local variables are returning nil:
+
+  year = current_year.to_sym # converts current year to symbol
+  month = current_month.downcase.to_sym # converts current month to a symbol
+
+  path = expense_data_path # loads path to income.yml
+
+  expense_data = load_expense_data # loads the contents of the yml file
+  expenses = { name: name, amount: amount, date: date} # hash will be stored in database
+
 
   #========NOTE===============
   # This hash data is hardcoded to debug a problem with nil:
 
-  income_data[year][month] << income # appends income to database
+  expense_data[year][month] << expenses # appends income to database
+  binding.pry
 
-  update_database = YAML.dump(income_data) # converts data to YAML
+  update_database = YAML.dump(expense_data) # converts data to YAML
   File.write(path, update_database) # update data in database (yml file)
 end
 
@@ -148,36 +223,6 @@ def create_empty_database_table
   File.open(path, 'w') { |file| file.write(income_table.to_yaml)}
 end
 
-#==========================
-
-def annual_database_table
-  year = current_year.to_sym
-  data = {year =>  { januray: [], february: [], march: [], april: [],
-                  may: [], june: [], july: [], august: [], september: [],
-                  october: [], november: [], december: [] }}
-end
-
-#===============================================================
-
-# load expense data
-
-# Redundent code (will refactor)
-def load_expense_data
-  expense_path = if ENV["RACK-ENV"] == "test"
-    File.expand_path("../test/data/expense.yml", __FILE__)
-  else
-    File.expand_path("../data/expense.yml", __FILE__)
-  end
-
-  YAML.load_file(expense_path)
-end
-
-# display expense data
-def show_expense_data(year, month)
-  expense_data = load_expense_data
-
-  expense_data[year]
-end
 
 
 # Routes
@@ -216,9 +261,7 @@ get "/income" do
 
   @monthly_data = Hash.new # displays chart data
 
-  # add_income_to_database(@current_year, @current_month)
-
-  @new_database_table = create_empty_database_table # creates a new empty database table
+  # @new_database_table = create_empty_database_table # creates a new empty database table
 
   session[:october_income].each do |hash|
     hash.each do |key, value|
@@ -262,8 +305,10 @@ get "/expenses" do
 
   @current_month
   @current_year
-   @expense_categories = session[:expense_categories]
-   session[:pie_chart] = { "Fixed Expenses" => 5, "Long Term Expenses" => 6, "Just for Fun" =>  9 } # need to build this
+
+
+  @expense_categories = session[:expense_categories]
+  session[:pie_chart] = { "Fixed Expenses" => 5, "Long Term Expenses" => 6, "Just for Fun" =>  9 } # need to build this
   erb :expense_categories, layout: :layout
 end
 
@@ -293,7 +338,9 @@ end
 
 # View all expenses within an expense category for a given month
 get "/expenses/:id" do
-  @total = []
+  @total = [100] # I need to fix this assignement issue
+
+  @expense_data = load_expense_data # for testing purposes (returns the absolute path)
 
   session[:id] = params[:id].to_i # setting the session id to params id
   session[:id]
@@ -301,7 +348,7 @@ get "/expenses/:id" do
 
   @monthly_expenses = Hash.new # displays chart data
 
-    session[:october_expenses].each do |hash|
+  session[:october_expenses].each do |hash|
       hash.each do |key, value|
         @monthly_expenses[key] = value
       end
@@ -330,12 +377,15 @@ end
 post "/expense" do
   expense_name = params[:expense_item].strip
   expense_amount = params[:expense_amount].strip
+  due_date = params[:expense_due_date].strip
   expense = { name: expense_name, amount: expense_amount, due_date: params[:expense_due_date] } # needs to be added to yaml file
 
   id = session[:id]
 
   if expense_name.size >= 1 && expense_name.size <= 100
     session[:expense_categories][id][:expenses] << expense
+    add_expense_to_database(expense_name, expense_amount, due_date)
+
     session[:october_expenses] << { expense_name => expense_amount } # info for display chart
     session[:success] = "The expense and amount has been created."
     redirect "/expenses/#{id}"
@@ -344,99 +394,6 @@ post "/expense" do
 
     erb :new_expense_item, layout: :layout
   end
-end
-
-
-
-#============= Debt ====================
-
-# Render a debt category
-get "/debt" do
-  time = Time.new
-    @current_month = time.strftime("%B")
-
-    @monthly_debt = Hash.new # displays chart data
-
-    session[:october_debt].each do |hash|
-      hash.each do |key, value|
-        @monthly_debt[key] = value
-      end
-    end
-
-    @total = []
-  erb :debt, layout: :layout
-end
-
-# Render a new debt form
-get "/debt/new" do
-  erb :new_debt_item, layout: :layout
-end
-
-# create a debt item
-post "/debt" do
-  debt_name = params[:debt_item].strip
-  debt_amount = params[:debt_amount].strip
-
-  if debt_name.size >= 1 && debt_name.size <= 100
-    session[:debt_items] << { name: debt_name, amount: debt_amount } # needs to be added to yaml file
-    session[:october_debt] << { debt_name => debt_amount } # info for display chart
-    session[:success] = "The debt and amount has been created."
-    redirect "/debt"
-  else
-    session[:error] = "Debt name must be between 1 and 100 characters"
-
-    erb :new_debt_item, layout: :layout
-  end
-end
-
-#=================== Debt Free ========================
-
-get "/debt/free" do
-  erb :debt_calculator, layout: :layout
-
-end
-
-#============= Emergency Fund ====================
-
-# Render emergency fund page
-get "/emergency" do
-  time = Time.new
-  @current_month = time.strftime("%B")
-
-  @emergency = {'Emergency Fund' => "500"}
-
-  @total = []
-  erb :emergency, layout: :layout
-end
-
-# Render a new emergengy fund form
-get "/emergency/new" do
-
-  erb :new_emergency_item, layout: :layout
-end
-
-# Render a new emergency goal form
-get "/emergency/goal" do
-
-  erb :new_emergency_goal, layout: :layout
-end
-
-
-# Create an emergency item
-post "/emergency" do
-  emergency_name = params[:emergency_item].strip
-  emergency_amount = params[:emergency_amount].strip
-
-  if emergency_name.size >= 1 && emergency_name.size <= 100
-    session[:emergency_items] << { name: emergency_name, amount: emergency_amount } # need to add to yaml file
-    session[:success] = "The debt and amount has been created."
-    redirect "/emergency"
-  else
-    session[:error] = "Debt name must be between 1 and 100 characters"
-
-    erb :new_emergency_item, layout: :layout
-  end
-
 end
 
 #============= New budget ====================
@@ -463,6 +420,7 @@ post '/mybudget' do
     # add_income_to_database(income_name, income_amount) # add income to yml file
 
    create_empty_database_table # creates a new empty database table
+   create_empty_expense_database_table # creates a new empty expense database table
 
     # session[:october_income] << { income_name => income_amount } # info for display chart
     session[:success] = "Your new budget has been created."
@@ -473,16 +431,6 @@ post '/mybudget' do
     erb :new_budget, layout: :layout
   end
 end
-
-
-
-#============= Goals ====================
-
-
-get "/goals" do
-  erb :goals, layout: :layout
-end
-
 
 #============= Net Worth ====================
 

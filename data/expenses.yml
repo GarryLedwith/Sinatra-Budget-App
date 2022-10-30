@@ -1,30 +1,15 @@
-  :2022:
-    :january: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :february: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :march: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :april: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :may: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :june: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :july: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :august: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :september: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :october: 
-      :expense_categories: {category: {name: "", amount: "" }}
-    :november:  
-      :expense_categories: {category: {name: "", amount: "" }}
-    :december: 
-      :expense_categories: {category: {name: "", amount: "" }}
-
-
-
-
-    
+---
+:2022:
+  :category:
+    :januray: []
+    :february: []
+    :march: []
+    :april: []
+    :may: []
+    :june: []
+    :july: []
+    :august: []
+    :september: []
+    :october: []
+    :november: []
+    :december: []

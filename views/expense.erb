@@ -1,7 +1,7 @@
 <section id="expense_items">
   <header>
-    <h2><%= @expense_category[:name]  %></h2> 
-   
+    <h2><%= @expense_category[:name]  %></h2>
+
   </header>
 </section>
 
@@ -10,7 +10,7 @@
     <h2><%= @expense_category[:name] %> for <%= @current_month %></h2>
   </header>
     <table>
-      <thead>   
+      <thead>
         <tr>
           <th scope="col" colspan="10">Expense</th>
           <th scope="col" colspan="10">Amount</th>
@@ -26,7 +26,7 @@
           <td scope="col" colspan="5"><%= table[:due_date] %></td>
           <td scope="col" colspan="5">
             <a href="/income/?/edit">Edit Item</a>
-          </td>  
+          </td>
            <td scope="col" colspan="5">
             <a href="/income/?/delete">Delete Item</a>
           </td>
@@ -37,7 +37,11 @@
 </div>
 
 
-<%# <p><%= @expense_category  %> 
+<%# <p><%= @expense_category  %>
+
+<h2><%= @expense_data %>
+
+<h2><%= @new_database_table %>
 
 <a href="/expense/new">Add New Expense</a>
 
@@ -46,8 +50,8 @@
  <% @total << table[:amount].to_i %>
 <% end %>
 
-<%# <%= session[:expense_items] %> 
-<h2>Total Expenses for <%= @current_month %>: $<%= @total.sum %></h2>
+<%# <%= session[:expense_items] %>
+<h2>Total Expenses for <%= @current_month %>:$ <%= @total.sum %></h2>
 
 <%# <%= @monthly_expenses %>
 
