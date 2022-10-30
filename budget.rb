@@ -90,7 +90,7 @@ def load_income_data
   YAML.load_file(income_path) # returns contents of yaml file
 end
 
-# Absolute path for incoem.yml
+# Absolute path for incoem.yml (will refactor)
 def income_data_path
   income_path = if ENV["RACK-ENV"] == "test"
     File.expand_path("../test/data/income.yml", __FILE__)
@@ -113,25 +113,48 @@ end
 
 # add income to income yaml file
 def add_income_to_database(name, amount)
-  income_data = load_income_data # loads the contents of the yml file
+
+  #   =========NOTE=======
+  # When I delete database these two local variables are returning nil:
+
+  year = current_year.to_sym # converts current year to symbol
+  month = current_month.downcase.to_sym # converts current month to a symbol
 
   path = income_data_path # loads path to income.yml
+
+  income_data = load_income_data # loads the contents of the yml file
   income = { name: name, amount: amount } # hash will be stored in database
 
-  # ====NOTE!!!=====
-  # The year and month are returning nil so I need to fix these lines:
 
-  year = current_year.to_s.to_sym # why is this line retruning nil?
-  month = current_month.downcase.to_sym
-#  binding.pry
-  income_data[:"2022"][:october] << income # appends income to database
-  update_database = YAML.dump(income_data) # convert data to YAML
+  #========NOTE===============
+  # This hash data is hardcoded to debug a problem with nil:
+
+  income_data[year][month] << income # appends income to database
+
+  update_database = YAML.dump(income_data) # converts data to YAML
   File.write(path, update_database) # update data in database (yml file)
-
 end
 
 def delete_income_data_form_database(name, amount)
   # this method will delete data from database
+end
+
+# will need to add one argument to this method: a path to yml file
+def create_empty_database_table
+  path = income_data_path # loads path to income.yml
+  income_data = load_income_data # loads the contents of the inclme yml file (tesing purposes only)
+  income_table = annual_database_table
+
+  File.open(path, 'w') { |file| file.write(income_table.to_yaml)}
+end
+
+#==========================
+
+def annual_database_table
+  year = current_year.to_sym
+  data = {year =>  { januray: [], february: [], march: [], april: [],
+                  may: [], june: [], july: [], august: [], september: [],
+                  october: [], november: [], december: [] }}
 end
 
 #===============================================================
@@ -194,6 +217,8 @@ get "/income" do
   @monthly_data = Hash.new # displays chart data
 
   # add_income_to_database(@current_year, @current_month)
+
+  @new_database_table = create_empty_database_table # creates a new empty database table
 
   session[:october_income].each do |hash|
     hash.each do |key, value|
@@ -414,11 +439,39 @@ post "/emergency" do
 
 end
 
-#============= My budget ====================
+#============= New budget ====================
 
 
 get "/mybudget" do
   erb :new_budget, layout: :layout
+end
+
+
+# Create an income item
+post '/mybudget' do
+  name = params[:budget_name].strip
+  # currency = params[:income_amount].strip
+  # date_format = params[:date_format].strip
+  # currenct_placement = params[:currenct_placement].strip
+
+  # how do I store this info form the form?
+
+
+
+  if name.size >= 1 && name.size <= 100
+    # session[:income_items] << { name: income_name, amount: income_amount } # needs to be added to yaml file
+    # add_income_to_database(income_name, income_amount) # add income to yml file
+
+   create_empty_database_table # creates a new empty database table
+
+    # session[:october_income] << { income_name => income_amount } # info for display chart
+    session[:success] = "Your new budget has been created."
+    redirect "/income"
+  else
+    session[:error] = "Budget name must be between 1 and 100 characters"
+
+    erb :new_budget, layout: :layout
+  end
 end
 
 
