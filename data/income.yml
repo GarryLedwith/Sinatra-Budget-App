@@ -1,6 +1,6 @@
 ---
 :2022:
-  :january: []
+  :januray: []
   :february: []
   :march: []
   :april: []
@@ -9,16 +9,6 @@
   :july: []
   :august: []
   :september: []
-  :october:
-  - :name: Web dev
-    :amount: '55'
-  - :name: Singing
-    :amount: '88'
-  - :name: Dancing
-    :amount: '88'
-  - :name: Teaching
-    :amount: '8999'
-  - :name: Teaching
-    :amount: '7888'
+  :october: []
   :november: []
   :december: []
