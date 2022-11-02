@@ -1,5 +1,8 @@
-class Income < Database s
-  def initialize
+# class Income < Database
+#   def initialize
 
-  end
-end
+#   end
+# end
+
+
+# This is for testing
