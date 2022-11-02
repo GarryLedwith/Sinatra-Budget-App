@@ -118,7 +118,7 @@ end
 
 #============ non specific database methods ==============
 
-# yearly database table template
+# yearly database table template for income
 def annual_database_table
   year = current_year.to_sym
 
@@ -131,19 +131,29 @@ end
 #====================================================
 # Expense database tables
 
-
-def annual_expense_category_database_table
+# method will be used in the categories route
+def annual_expense_category_database_table(category_name)
   year = current_year.to_sym
+  category = category_name.to_sym
 
-  { year => { category: { januray: [], february: [], march: [], april: [],
+  { year => { category => { januray: [], february: [], march: [], april: [],
     may: [], june: [], july: [], august: [], september: [],
     october: [], november: [], december: [] }}}
 end
 
-def create_empty_expense_database_table
+def create_empty_expense_database_table(category_name)
   path = expense_data_path # loads path to income.yml
   expense_data = load_expense_data # loads the contents of the inclme yml file (tesing purposes only)
-  expense_table = annual_expense_category_database_table
+  expense_table = annual_expense_category_database_table(category_name)
+
+  File.open(path, 'a+') { |file| file.write(expense_table.to_yaml)}
+end
+
+def create_new_expense_database
+  path = expense_data_path # loads path to income.yml
+  expense_data = load_expense_data # loads the contents of the inclme yml file (tesing purposes only)
+  category_name = 'test'.to_sym
+  expense_table = annual_expense_category_database_table(category_name)
 
   File.open(path, 'w') { |file| file.write(expense_table.to_yaml)}
 end
@@ -193,6 +203,7 @@ def add_expense_to_database(name, amount, date)
 
   year = current_year.to_sym # converts current year to symbol
   month = current_month.downcase.to_sym # converts current month to a symbol
+  category = "Fixed Expenses" # hardcoded for testing
 
   path = expense_data_path # loads path to income.yml
 
@@ -202,9 +213,9 @@ def add_expense_to_database(name, amount, date)
 
   #========NOTE===============
   # This hash data is hardcoded to debug a problem with nil:
-
-  expense_data[year][month] << expenses # appends income to database
-  binding.pry
+  # binding.pry
+  expense_data[:"2022"][:test][:november] << expenses # appends income to database
+  # binding.pry
 
   update_database = YAML.dump(expense_data) # converts data to YAML
   File.write(path, update_database) # update data in database (yml file)
@@ -306,6 +317,8 @@ get "/expenses" do
   @current_month
   @current_year
 
+  @category = session[:expense_category_name] # use this name for my database hash
+
 
   @expense_categories = session[:expense_categories]
   session[:pie_chart] = { "Fixed Expenses" => 5, "Long Term Expenses" => 6, "Just for Fun" =>  9 } # need to build this
@@ -321,12 +334,20 @@ end
 post '/expenses' do
   category_name = params[:expense_category_name].strip # returning nil when trying to create a new expense
 
-  # hard code:
-  expense_name = "Rent"
-  expense_amount = "$500"
+  # databae in yml:
+
 
   if category_name.size >= 1 && category_name.size <= 100
     session[:expense_categories] << { name: category_name, expenses: [] } # need to be added to yaml file
+
+    session[:expense_category_name] = category_name
+
+    # I need to add a method here to build a database yaml file
+
+  # add new hash to expense yaml file from here
+
+  create_empty_expense_database_table(category_name)
+
     session[:success] = "The expense category has been created."
     redirect "/expenses"
   else
@@ -420,7 +441,9 @@ post '/mybudget' do
     # add_income_to_database(income_name, income_amount) # add income to yml file
 
    create_empty_database_table # creates a new empty database table
-   create_empty_expense_database_table # creates a new empty expense database table
+  #  create_empty_expense_database_table # creates a new empty expense database
+  #  table
+  create_new_expense_database
 
     # session[:october_income] << { income_name => income_amount } # info for display chart
     session[:success] = "Your new budget has been created."
@@ -435,13 +458,13 @@ end
 #============= Net Worth ====================
 
 
-# get "/networth" do
+get "/networth" do
 
-#   @networth = { "January" => "800000", "February" => "760000", "March" => "810000",
-#     "April" => "660000", "May" => "850000","June" => "850000",
-#     "July" => "850000", "August" => "850000", "September" => "975000"}
-#   erb :net_worth, layout: :layout
-# end
+  @networth = { "January" => "800000", "February" => "760000", "March" => "810000",
+    "April" => "660000", "May" => "850000","June" => "850000",
+    "July" => "850000", "August" => "850000", "September" => "975000"}
+  erb :networth_report, layout: :layout
+end
 
 #============= Insights ====================
 
@@ -456,6 +479,55 @@ get "/insights" do
 end
 
 
+#display debt calculator tool
+get "/tools" do
+
+erb :debt_calculator, layout: :layout
+end
+
+
+#======= Reports ========================
+
+
+# Render income report
+get "/income-report" do
+
+  erb :income_report, layout: :layout
+end
+
+# Create income report
+post "/income-report" do
+
+redirect "/income-report"
+end
+
+
+# Render spending report
+get "/spending-report" do
+
+  erb :income_report, layout: :layout
+end
+
+# Render income vs spending report
+get "/income_vs_spending" do
+
+  erb :income_vs_expending, layout: :layout
+end
+
+# Render networth report
+get "/networth-report" do
+
+  @networth = { "January" => "800000", "February" => "760000", "March" => "810000",
+    "April" => "660000", "May" => "850000","June" => "850000",
+    "July" => "850000", "August" => "850000", "September" => "5000"}
+
+  erb :networth_report, layout: :layout
+end
+
+post "/networth-report" do
+
+  redirect "/networth-report"
+end
 
 
 
