@@ -16,7 +16,7 @@
   </head>
   <body>
     <header>
-         <h1>October 2022</h1>
+         <h1><%= @current_month %> <%= @current_year %></h1>
 
          <h2><%= @month_year %>
 
@@ -28,14 +28,14 @@
           <ul>
             <li><a href="/mybudget"><i class="fa-solid fa-landmark"></i>New Budget</a></li>
             <li><a href="/income"><i class="fa-solid fa-landmark"></i>Income</a></li>
-            <li><a href="/expenses"><i class="fa-solid fa-landmark"></i>Expenses</a></li>
+            <li><a href="/expenses"><i class="fa-solid fa-landmark"></i>Expense Categories</a></li>
             <%# <li><a href="/debt"><i class="fa-regular fa-hands-holding-dollar"></i>Debt</a></li> %>
 
             <%# <li><a href="/emergency"><i class="fa-regular fa-hands-holding-dollar"></i>Emergency Fund</a></li> %>
             <%# <li><a href="/goals"><i class="fa-solid fa-piggy-bank"></i>Goals</a></li> %>
             <%# <li><a href="/networth"><i class="fa-solid fa-face-tongue-money"></i>Net Worth</a></li> %>
             <li><a href="/insights"><i class="fa-regular fa-hands-holding-dollar"></i>Reports</a></li>
-             <li><a href="/debt/free"><i class="fa-regular fa-hands-holding-dollar"></i>Tools</a></li>
+             <li><a href="/tools"><i class="fa-regular fa-hands-holding-dollar"></i>Tools</a></li>
 
           </ul>
       </div>
