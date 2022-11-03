@@ -525,7 +525,6 @@ get "/networth-report" do
 end
 
 post "/networth-report" do
-
   redirect "/networth-report"
 end
 
