@@ -102,7 +102,7 @@ def add_income_to_database(name, amount)
 
   income_data[year][month] << income # appends income to database
 
-  update_database = YAML.dump(income_data) # converts data to YAML
+  update_database = YAML.dump(income_data) # converts data to YAML format
   File.write(path, update_database) # update data in database (yml file)
   # binding.pry
 end
