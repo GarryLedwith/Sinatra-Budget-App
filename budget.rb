@@ -32,7 +32,6 @@ end
 # displays current month
 def current_month
   time = Time.new
-
   time.strftime("%B")
 end
 
